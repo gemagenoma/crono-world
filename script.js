@@ -9,15 +9,18 @@ document.getElementById('canvas-container').appendChild(renderer.domElement);
 
 camera.position.z = 2.5;
 
+const mainColor = 0xaa96da;
+const accentColor = 0xd0c8e0;
+
 // Globe data - 7 points around the world
 const locations = [
-    { name: 'New York', lat: 40.7128, lon: -74.0060, label: 1, color: 0xff6b6b },
-    { name: 'London', lat: 51.5074, lon: -0.1278, label: 2, color: 0x4ecdc4 },
-    { name: 'Paris', lat: 48.8566, lon: 2.3522, label: 3, color: 0xffe66d },
-    { name: 'Tokyo', lat: 35.6762, lon: 139.6503, label: 4, color: 0x95e1d3 },
-    { name: 'Sydney', lat: -33.8688, lon: 151.2093, label: 5, color: 0xf38181 },
-    { name: 'San Francisco', lat: 37.7749, lon: -122.4194, label: 6, color: 0xaa96da },
-    { name: 'São Paulo', lat: -23.5505, lon: -46.6333, label: 7, color: 0xfcbad3 }
+    { name: 'New York', lat: 40.7128, lon: -74.0060, label: 1, color: accentColor },
+    { name: 'London', lat: 51.5074, lon: -0.1278, label: 2, color: accentColor },
+    { name: 'Paris', lat: 48.8566, lon: 2.3522, label: 3, color: accentColor },
+    { name: 'Tokyo', lat: 35.6762, lon: 139.6503, label: 4, color: accentColor },
+    { name: 'Sydney', lat: -33.8688, lon: 151.2093, label: 5, color: accentColor },
+    { name: 'San Francisco', lat: 37.7749, lon: -122.4194, label: 6, color: accentColor },
+    { name: 'São Paulo', lat: -23.5505, lon: -46.6333, label: 7, color: accentColor }
 ];
 
 // Convert lat/lon to 3D coordinates on sphere
@@ -33,20 +36,19 @@ function latLonToXYZ(lat, lon, radius = 1) {
 }
 
 // Create globe
-const globeGeometry = new THREE.SphereGeometry(1, 64, 64);
-const globeMaterial = new THREE.MeshPhongMaterial({
-    color: 0x1a472a,
-    emissive: 0x1a472a,
-    wireframe: false,
-    shininess: 5
-});
+const globeGeometry = new THREE.SphereGeometry(1, 32, 16);
+const globeMaterial = new THREE.MeshBasicMaterial({ 
+    color: mainColor, 
+    wireframe: true, 
+    transparent: true 
+}); 
 const globe = new THREE.Mesh(globeGeometry, globeMaterial);
 scene.add(globe);
 
 // Add atmosphere glow
 const atmosphereGeometry = new THREE.SphereGeometry(1.05, 64, 64);
 const atmosphereMaterial = new THREE.MeshBasicMaterial({
-    color: 0x00ffff,
+    color: 0x5000ffff,
     transparent: true,
     opacity: 0.1,
     wireframe: false
@@ -63,28 +65,16 @@ locations.forEach((loc) => {
     const pos = latLonToXYZ(loc.lat, loc.lon, 1);
     
     // Create glowing sphere for each location
-    const pointGeometry = new THREE.SphereGeometry(0.08, 32, 32);
+    const pointGeometry = new THREE.SphereGeometry(0.02, 32, 32);
     const pointMaterial = new THREE.MeshBasicMaterial({ color: loc.color });
     const point = new THREE.Mesh(pointGeometry, pointMaterial);
     point.position.copy(pos);
     point.userData = { name: loc.name, label: loc.label };
     pointsGroup.add(point);
     
-    // Create glow halo
-    const haloGeometry = new THREE.SphereGeometry(0.12, 32, 32);
-    const haloMaterial = new THREE.MeshBasicMaterial({
-        color: loc.color,
-        transparent: true,
-        opacity: 0.3,
-        wireframe: true
-    });
-    const halo = new THREE.Mesh(haloGeometry, haloMaterial);
-    halo.position.copy(pos);
-    pointsGroup.add(halo);
-    
     // Create convergence line with dots
     const linePoints = [];
-    const dotCount = 20;
+    const dotCount = 70;
     for (let i = 0; i <= dotCount; i++) {
         const t = i / dotCount;
         const point = new THREE.Vector3(
@@ -109,7 +99,7 @@ locations.forEach((loc) => {
     // Add individual dots for the line
     linePoints.forEach((dotPos, index) => {
         if (index % 3 === 0) { // Create dots every 3 points
-            const dotGeometry = new THREE.SphereGeometry(0.02, 16, 16);
+            const dotGeometry = new THREE.SphereGeometry(0.008, 16, 16);
             const dotMaterial = new THREE.MeshBasicMaterial({ color: loc.color });
             const dot = new THREE.Mesh(dotGeometry, dotMaterial);
             dot.position.copy(dotPos);
