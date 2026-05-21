@@ -60,6 +60,7 @@ scene.add(atmosphere);
 const pointsGroup = new THREE.Group();
 const linesGroup = new THREE.Group();
 const labelsArray = [];
+const textLabelsGroup = new THREE.Group();
 
 locations.forEach((loc) => {
     const pos = latLonToXYZ(loc.lat, loc.lon, 1);
@@ -72,44 +73,29 @@ locations.forEach((loc) => {
     point.userData = { name: loc.name, label: loc.label };
     pointsGroup.add(point);
     
-    // Create convergence line with dots
-    const linePoints = [];
-    const dotCount = 70;
-    for (let i = 0; i <= dotCount; i++) {
-        const t = i / dotCount;
-        const point = new THREE.Vector3(
-            pos.x * (1 - t),
-            pos.y * (1 - t),
-            pos.z * (1 - t)
-        );
-        linePoints.push(point);
-    }
+    // Create floating text label
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width = 256;
+    canvas.height = 64;
     
-    // Create dotted line using line with dashes
-    const lineGeometry = new THREE.BufferGeometry().setFromPoints(linePoints);
-    const lineMaterial = new THREE.LineBasicMaterial({
-        color: loc.color,
-        linewidth: 1,
-        transparent: true,
-        opacity: 0.6
-    });
-    const line = new THREE.Line(lineGeometry, lineMaterial);
-    linesGroup.add(line);
+    context.fillStyle = '#ffffff';
+    context.font = 'Bold 32px Arial';
+    context.textAlign = 'center';
+    context.textBaseline = 'middle';
+    context.fillText(loc.name, 128, 32);
     
-    // Add individual dots for the line
-    linePoints.forEach((dotPos, index) => {
-        if (index % 3 === 0) { // Create dots every 3 points
-            const dotGeometry = new THREE.SphereGeometry(0.008, 16, 16);
-            const dotMaterial = new THREE.MeshBasicMaterial({ color: loc.color });
-            const dot = new THREE.Mesh(dotGeometry, dotMaterial);
-            dot.position.copy(dotPos);
-            linesGroup.add(dot);
-        }
-    });
+    const texture = new THREE.CanvasTexture(canvas);
+    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+    const sprite = new THREE.Sprite(spriteMaterial);
+    sprite.scale.set(0.5, 0.125, 1);
+    sprite.position.copy(pos).normalize().multiplyScalar(1.35);
+    textLabelsGroup.add(sprite);
 });
 
 scene.add(pointsGroup);
 scene.add(linesGroup);
+scene.add(textLabelsGroup);
 
 // Lighting
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
@@ -133,6 +119,7 @@ function animate() {
     atmosphere.rotation.y += 0.0003;
     pointsGroup.rotation.y += 0.0003;
     linesGroup.rotation.y += 0.0003;
+    textLabelsGroup.rotation.y += 0.0003;
     
     // Pulse effect on points
     time += 0.02;
