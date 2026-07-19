@@ -26,7 +26,10 @@ const locations = [
     { date: new Date(-380,2,4,4,1,13,533), name: 'Atenas', lat: 37.9838, lon: 23.7275, label: 2, color: accentColor },
     { date: new Date(1010,3,3,1,9,43,87), name: 'El Cairo', lat: 30.0444, lon: 31.2357, label: 3, color: accentColor },
     { date: new Date(1690,4,2,8,2,34,52), name: 'Méjico', lat: 19.4326, lon: -99.1332, label: 4, color: accentColor },
-    { date: new Date(1898,5,1,7,10,53,24), name: 'Paris', lat: 48.8566, lon: 2.3522, label: 5, color: accentColor }
+    { date: new Date(1898,5,1,7,10,53,24), name: 'Paris', lat: 48.8566, lon: 2.3522, label: 5, color: accentColor },
+	{ date: new Date(1769,6,13,10,32,21,3), name: 'Tahiti', lat: -17.5028, lon: -149.4931, label: 6, color: accentColor },
+	{ date: new Date(-4280000000, 1, 2, 23, 56, 32, 341), name: 'Galapagos', lat: -21.1815, lon: -109.0718, label: 7, color: accentColor },
+	{ date: new Date(-259000, 10, 7, 4, 3, 6, 54), name: 'Florisbad', lat: -28.7660, lon: 26.0830, label: 8, color: accentColor }
 ];
 
 // Convert lat/lon to 3D coordinates on sphere
