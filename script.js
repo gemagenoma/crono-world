@@ -30,7 +30,7 @@ const locations = [
 	{ date: new Date(1769,6,13,10,32,21,3), name: 'Tahiti', lat: -17.5028, lon: -149.4931, label: 6, color: accentColor },
 	{ date: new Date(-5000, 1, 2, 23, 56, 32, 341), name: 'Yuyao', lat: 29.9642, lon: 121.3444, label: 7, color: accentColor },
 	{ date: new Date(-259000, 10, 7, 4, 3, 6, 54), name: 'Florisbad', lat: -28.7660, lon: 26.0830, label: 8, color: accentColor },
-	{ date: new Date(1520, 11, 28, 12, 4, 1, 43), name: 'Estrecho de Magallanes', lat: -28.7660, lon: 26.0830, label: 9, color: accentColor },
+	{ date: new Date(1520, 11, 28, 12, 4, 1, 43), name: 'Estrecho de Magallanes', lat: -53.6000, lon: -70.9000, label: 9, color: accentColor },
 	{ date: new Date(1946, 5, 1, 8, 24, 21, 98), name: 'Pilbara', lat: -20.3107, lon: 118.5753, label: 10, color: accentColor }
 ];
 
