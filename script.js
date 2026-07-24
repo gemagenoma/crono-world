@@ -24,7 +24,7 @@ function getTime(event) {
 const locations = [
     { date: new Date(415,1,5,4,3,23,143), name: 'Alejandría', lat: 31.2001, lon: 29.9187, label: 1, color: accentColor },
     { date: new Date(-380,2,4,4,1,13,533), name: 'Atenas', lat: 37.9838, lon: 23.7275, label: 2, color: accentColor },
-    { date: new Date(1010,3,3,1,9,43,87), name: 'El Cairo', lat: 30.0444, lon: 31.2357, label: 3, color: accentColor },
+    { date: new Date(964, 5, 3, 4, 8, 12, 942), name: 'Isfahan', lat: 32.6546, lon: 51.6680, label: 3, color: accentColor }
     { date: new Date(1690,4,2,8,2,34,52), name: 'Méjico', lat: 19.4326, lon: -99.1332, label: 4, color: accentColor },
     { date: new Date(1898,5,1,7,10,53,24), name: 'Paris', lat: 48.8566, lon: 2.3522, label: 5, color: accentColor },
 	{ date: new Date(1769,6,13,10,32,21,3), name: 'Tahiti', lat: -17.5028, lon: -149.4931, label: 6, color: accentColor },
