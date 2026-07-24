@@ -31,7 +31,12 @@ const locations = [
 	{ date: new Date(-5000, 1, 2, 23, 56, 32, 341), name: 'Yuyao', lat: 29.9642, lon: 121.3444, label: 7, color: accentColor },
 	{ date: new Date(-259000, 10, 7, 4, 3, 6, 54), name: 'Florisbad', lat: -28.7660, lon: 26.0830, label: 8, color: accentColor },
 	{ date: new Date(1520, 11, 28, 12, 4, 1, 43), name: 'Estrecho de Magallanes', lat: -53.6000, lon: -70.9000, label: 9, color: accentColor },
-	{ date: new Date(1946, 5, 1, 8, 24, 21, 98), name: 'Pilbara', lat: -20.3107, lon: 118.5753, label: 10, color: accentColor }
+	{ date: new Date(1946, 5, 1, 8, 24, 21, 98), name: 'Pilbara', lat: -20.3107, lon: 118.5753, label: 10, color: accentColor },
+	{ date: new Date(628, 1, 1, 0, 0, 0, 0), name: 'Madhya Pradesh', lat: 26.2295, lon: 78.1738, label: 11, color: accentColor },
+	{ date: new Date(1893, 9, 19, 12, 2, 21, 376), name: 'Wellington', lat: -41.2865, lon: 174.7762, label: 12, color: accentColor },
+	{ date: new Date(-22000, 8, 3, 4, 2, 24, 473), name: 'Yukon', lat: 67.4833, lon: -139.9167, label: 13, color: accentColor },
+	{ date: new Date(1911, 1, 14, 12, 22, 12, 874), name: 'Bahía de las Ballenas', lat: -78.6333, lon: -164.3333, label: 14, color: accentColor }
+
 ];
 
 // Convert lat/lon to 3D coordinates on sphere
