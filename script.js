@@ -90,24 +90,30 @@ locations.forEach((loc) => {
     point.userData = { name: loc.name, label: loc.label };
     pointsGroup.add(point);
     
-    // Create floating text label
+    // Create floating text label (larger canvas to avoid truncation)
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');
-    canvas.width = 256;
-    canvas.height = 64;
+    // Increased canvas size and height to fit longer text
+    canvas.width = 512;
+    canvas.height = 128;
     
     context.fillStyle = '#d0c8e0';
-    context.font = 'Bold 32px Courier New';
+    context.font = 'Bold 40px Courier New';
     context.textAlign = 'center';
     context.textBaseline = 'middle';
-    context.fillText(getTime(loc.date), 128, 32);
+    context.fillText(getTime(loc.date), canvas.width / 2, canvas.height / 2);
     
     const texture = new THREE.CanvasTexture(canvas);
-    const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+    texture.minFilter = THREE.LinearFilter; // better for dynamic textures
+    const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(0.5, 0.125, 1);
+    // Scale adjusted to match larger canvas
+    sprite.scale.set(1.0, 0.25, 1);
     sprite.position.copy(pos).normalize().multiplyScalar(1.12);
     textLabelsGroup.add(sprite);
+
+    // Keep references so we can update the text every interval
+    labelsArray.push({ canvas, context, texture, sprite, date: loc.date });
 
     // Create convergence line with dots
     const linePoints = [];
@@ -159,6 +165,17 @@ scene.add(pointLight);
 
 // Animation
 let time = 0;
+// Track last label update
+let lastLabelUpdate = performance.now();
+
+// Set a random initial longitude for the globe and all related groups
+const initialRotation = Math.random() * Math.PI * 2;
+globe.rotation.y = initialRotation;
+atmosphere.rotation.y = initialRotation;
+pointsGroup.rotation.y = initialRotation;
+linesGroup.rotation.y = initialRotation;
+textLabelsGroup.rotation.y = initialRotation;
+
 function animate() {
     requestAnimationFrame(animate);
     
@@ -176,6 +193,23 @@ function animate() {
         const scale = 1 + Math.sin(time + index * 0.5) * 0.5;
         child.scale.set(scale, scale, scale);
     });
+
+    // Update label textures every `interval` milliseconds
+    const now = performance.now();
+    if (now - lastLabelUpdate >= interval) {
+        labelsArray.forEach((lbl) => {
+            const { canvas, context, texture, date } = lbl;
+            // Clear and redraw
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            context.fillStyle = '#d0c8e0';
+            context.font = 'Bold 40px Courier New';
+            context.textAlign = 'center';
+            context.textBaseline = 'middle';
+            context.fillText(getTime(date), canvas.width / 2, canvas.height / 2);
+            texture.needsUpdate = true;
+        });
+        lastLabelUpdate = now;
+    }
     
     renderer.render(scene, camera);
 }
